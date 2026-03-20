@@ -5,9 +5,9 @@ state = 1
 steps = []
 
 tile_map = {
-    "0": Image.open("src/clean.png")
-    "1": Image.open("src/dirty.png")
-    "2": Image.open("src/vacuum_clean.png")
+    "0": Image.open("src/clean.png"),
+    "1": Image.open("src/dirty.png"),
+    "2": Image.open("src/vacuum_clean.png"),
     "3": Image.open("src/vacuum_dirty.png")
 }
 TILE_W, TILE_H = tile_map["0"].size
