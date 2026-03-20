@@ -1,6 +1,23 @@
+from PIL import Image
+
 room_num = ['A', 'B', 'C', 'D', 'E']
 state = 1
 steps = []
+
+tile_map = {
+    "0": Image.open("src/clean.png")
+    "1": Image.open("src/dirty.png")
+    "2": Image.open("src/vacuum_clean.png")
+    "3": Image.open("src/vacuum_dirty.png")
+}
+TILE_W, TILE_H = tile_map["0"].size
+
+def draw_state_image(temp_bits):
+    row = Image.new("RGB", (len(temp_bits) * TILE_W, TILE_H))
+    for i, bit in enumerate(temp_bits):
+        row.paste(tile_map[bit], (i * TILE_W, 0))
+    return row
+
 
 def move_left():
     steps.append("Left")
@@ -56,7 +73,9 @@ def start_cleaning(num_lr, num_rr, v_pos, list_lr, list_rr, bits):
                     v_pos -= 1
                     if v_pos in list_lr:
                         suck()
-                        list_lr.remove(v_pos)           
+                        list_lr.remove(v_pos)          
+
+frames = [] 
 
 
 for i in range(int("11", 2) + 1):
@@ -84,6 +103,8 @@ for i in range(int("11", 2) + 1):
         bits_copy = bits.copy()
         start_cleaning(num_left_rooms, num_right_rooms, j, left_dirty_rooms, right_dirty_rooms, bits_copy)
 
+        frames.append(draw_state_image(temp_bits))
+
         print("".join(temp_bits))
 
         for k in range(len(bits)):
@@ -93,3 +114,6 @@ for i in range(int("11", 2) + 1):
         print("If goal is reached:\n   stop\nelse:")
         print("   [" + ", ".join(steps) + "]")
         steps.clear()
+
+frames[0].save("vacuum_states.pdf", save_all=True, append_images=frames[1:])
+print("\nAll states have been saved to vacuum_states.pdf")
