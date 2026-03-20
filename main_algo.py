@@ -70,7 +70,10 @@ for i in range(int("11", 2) + 1):
         state += 1
         
         temp_bits = bits.copy()
-        temp_bits[j] = "2"
+        if bits[j] == "1":
+            temp_bits[j] = "3" # dirty room with VC
+        else:
+            temp_bits[j] = "2" # clean room with VC
         
         left_dirty_rooms = [idx for idx, bit in enumerate(bits) if bit == "1" and idx < j]
         right_dirty_rooms = [idx for idx, bit in enumerate(bits) if bit == "1" and idx > j]
